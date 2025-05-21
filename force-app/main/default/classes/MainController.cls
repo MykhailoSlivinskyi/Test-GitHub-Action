@@ -4,6 +4,6 @@
 
 public with sharing class MainController {
     public static void run() {
-        System.debug('running');
+        System.debug('running hello world');
     }
 }
