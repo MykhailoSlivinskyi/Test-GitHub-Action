@@ -3,5 +3,7 @@
  */
 
 public with sharing class MainController {
-    //test
+    public static void run() {
+        System.debug('running');
+    }
 }
