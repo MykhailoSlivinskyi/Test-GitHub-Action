@@ -76,14 +76,20 @@ jobs:
 #        uses: github/codeql-action/upload-sarif@v1
 #        with:
 #          sarif_file: changed-sources/apexScanResults.sarif
+      - name: Authenticate to Salesforce
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > sfdx_auth.txt
+          sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth.txt --setdefaultusername --noprompt
+          rm sfdx_auth.txt
 
-      - name: 'Check-only deploy delta changes - run specified tests'
-        with:
-          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+      - name: Check-only deploy delta changes - run specified tests
         if: ${{ env.APEX_TESTS != 'all' }}
         run: |
-          echo ${{env.APEX_TESTS}}
+          echo "${{ env.APEX_TESTS }}"
           sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel NoTestRun
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+
 #
 
 #      - name: 'Check-only deploy delta changes - run specified tests'
